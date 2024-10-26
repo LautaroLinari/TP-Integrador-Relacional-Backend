@@ -1,0 +1,17 @@
+{
+  "name": "tp_integrador_backend_relacional-linari",
+  "version": "1.0.0",
+  "description": "## Descripción del Proyecto",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "mysql": "^2.18.1",
+    "sequelize": "^6.37.5"
+  }
+}
