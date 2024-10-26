@@ -122,21 +122,59 @@ router.get('/contenido', async (req, res) => {
     }
 })
 
-router.get('/:id', (req, res) => {
-    // Get content by ID
-});
+// Obtener contenido por ID con sus asociaciones
+router.get('/contenido/:id', async (req, res) => {
+    try {
+        const contenido = await Contenido.findByPk(req.params.id, {
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'], // Incluir todos los campos
+            include: [
+                {
+                    model: Actor,
+                    as: 'actores',
+                    attributes: ['nombre', 'apellido']
+                },
+                {
+                    model: Genero,
+                    as: 'generos',
+                    attributes: ['ID', 'nombre_genero']
+                },
+                {
+                    model: Categoria,
+                    as: 'categoria',
+                    attributes: ['nombre_categoria']
+                }
+            ]
+        });
+
+        if (contenido) {
+            const contenidoData = contenido.get({ plain: true });
+            if (contenidoData.temporadas === null) {
+                delete contenidoData.temporadas; // Eliminar el campo si es NULL
+            }
+            res.json(contenidoData);
+        } else {
+            res.status(404).json({ error: 'Contenido no encontrado' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al obtener el contenido', details: error.message });
+    }
+})
+
 
 router.post('/', (req, res) => {
     // Add new content
 });
 
+
 router.put('/:id', (req, res) => {
     // Update content by ID
 });
 
+
 router.delete('/:id', (req, res) => {
     // Delete content by ID
 });
+
 
 module.exports = router;
     
