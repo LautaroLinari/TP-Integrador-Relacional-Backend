@@ -76,6 +76,52 @@ router.get('/contenido/filter', async (req, res) => {
     }
 })
 
+
+// Ruta de prueba para ver si funciona
+router.get('/', (req, res) => {
+    res.status(200).json({ message: 'Bienvenido al Trabajo Practico de BD Relacionales Backend!' })
+})
+
+
+// Obtener todos los contenidos con sus actores, géneros, categoría, duración y temporadas
+router.get('/contenido', async (req, res) => {
+    try {
+        const contenidos = await Contenido.findAll({
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'], // Incluir todos los campos
+            include: [
+                {
+                    model: Actor,
+                    as: 'actores',
+                    attributes: ['nombre', 'apellido']
+                },
+                {
+                    model: Genero,
+                    as: 'generos',
+                    attributes: ['ID', 'nombre_genero']
+                },
+                {
+                    model: Categoria,
+                    as: 'categoria',
+                    attributes: ['nombre_categoria']
+                }
+            ]
+        });
+
+        // Modificar la respuesta para omitir 'temporadas' si es NULL
+        const resultados = contenidos.map(contenido => {
+            const contenidoData = contenido.get({ plain: true });
+            if (contenidoData.temporadas === null) {
+                delete contenidoData.temporadas; // Eliminar el campo si es NULL
+            }
+            return contenidoData;
+        });
+
+        res.json(resultados);
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al obtener los contenidos', details: error.message });
+    }
+})
+
 router.get('/:id', (req, res) => {
     // Get content by ID
 });
