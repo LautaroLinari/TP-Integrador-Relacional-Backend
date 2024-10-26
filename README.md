@@ -33,7 +33,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    cd <nombre-del-repositorio>
 
 2. **Instala las dependencias:**
-   npm install express mysql sequelize
+   npm install express mysql mysql2 sequelize
 
 3. **Descarga los archivos SQL**
    Primero ingresa a Mysql Workbench y a su usuario root.
