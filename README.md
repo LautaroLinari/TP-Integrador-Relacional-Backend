@@ -140,7 +140,8 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    nombre_categoria: Filtra por nombre de categoría.
 
 
-   Ejemplos: 
+   **Ejemplos**: 
+   
    GET http://localhost:3000/contenido/filter?nombre_genero=Drama
 
    GET http://localhost:3000/contenido/filter?nombre_categoria=Pelí

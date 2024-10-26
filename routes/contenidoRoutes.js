@@ -11,12 +11,11 @@ const router = express.Router()
 router.get('/contenido/filter', async (req, res) => {
     const { titulo, nombre_genero, nombre_categoria } = req.query;
 
-    // Filtros dinámicos
     let where = {};
     
-    // Añadir filtro por título solo si se proporciona
+    // Añadir filtro por título solo si es proporcionado
     if (titulo) {
-        where.titulo = { [Op.like]: `%${titulo}%` };  // Filtro por título
+        where.titulo = { [Op.like]: `%${titulo}%` };
     }
 
     const generoCondition = nombre_genero ? { nombre_genero: { [Op.like]: `%${nombre_genero}%` } } : {};
@@ -31,7 +30,7 @@ router.get('/contenido/filter', async (req, res) => {
     try {
         const contenidos = await Contenido.findAndCountAll({
             where,
-            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'], // Incluir todos los campos
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'], 
             include: [
                 {
                     model: Actor,
@@ -42,25 +41,24 @@ router.get('/contenido/filter', async (req, res) => {
                     model: Genero,
                     as: 'generos',
                     attributes: ['ID', 'nombre_genero'],
-                    where: generoCondition  // Aplicar el filtro para género aquí
+                    where: generoCondition
                 },
                 {
                     model: Categoria,
                     as: 'categoria',
                     attributes: ['nombre_categoria'],
-                    where: categoriaCondition  // Aplicar el filtro para categoría aquí
+                    where: categoriaCondition 
                 }
             ]
         });
 
         console.log('Conteo de contenidos encontrados:', contenidos.count);
-        console.log('Contenidos encontrados:', contenidos.rows);  // Imprimir los contenidos encontrados
+        console.log('Contenidos encontrados:', contenidos.rows); 
 
-        // Modificar la respuesta para omitir 'temporadas' si es NULL
         const resultados = contenidos.rows.map(contenido => {
             const contenidoData = contenido.get({ plain: true });
             if (contenidoData.temporadas === null) {
-                delete contenidoData.temporadas; // Eliminar el campo si es NULL
+                delete contenidoData.temporadas; 
             }
             return contenidoData;
         });
@@ -71,7 +69,7 @@ router.get('/contenido/filter', async (req, res) => {
 
         res.json({ count: resultados.length, rows: resultados });
     } catch (error) {
-        console.error('Error al filtrar contenidos:', error); // Log de error
+        console.error('Error al filtrar contenidos:', error); 
         res.status(500).json({ error: 'Ocurrió un error al filtrar los contenidos', details: error.message });
     }
 })
@@ -87,7 +85,7 @@ router.get('/', (req, res) => {
 router.get('/contenido', async (req, res) => {
     try {
         const contenidos = await Contenido.findAll({
-            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'], // Incluir todos los campos
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
             include: [
                 {
                     model: Actor,
@@ -107,11 +105,10 @@ router.get('/contenido', async (req, res) => {
             ]
         });
 
-        // Modificar la respuesta para omitir 'temporadas' si es NULL
         const resultados = contenidos.map(contenido => {
             const contenidoData = contenido.get({ plain: true });
             if (contenidoData.temporadas === null) {
-                delete contenidoData.temporadas; // Eliminar el campo si es NULL
+                delete contenidoData.temporadas;
             }
             return contenidoData;
         });
@@ -122,11 +119,12 @@ router.get('/contenido', async (req, res) => {
     }
 })
 
+
 // Obtener contenido por ID con sus asociaciones
 router.get('/contenido/:id', async (req, res) => {
     try {
         const contenido = await Contenido.findByPk(req.params.id, {
-            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'], // Incluir todos los campos
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
             include: [
                 {
                     model: Actor,
@@ -149,7 +147,7 @@ router.get('/contenido/:id', async (req, res) => {
         if (contenido) {
             const contenidoData = contenido.get({ plain: true });
             if (contenidoData.temporadas === null) {
-                delete contenidoData.temporadas; // Eliminar el campo si es NULL
+                delete contenidoData.temporadas;
             }
             res.json(contenidoData);
         } else {
@@ -191,7 +189,6 @@ router.post('/contenido', async (req, res) => {
 
 
     try {
-        // Crear el nuevo contenido
         const nuevoContenido = await Contenido.create({
             titulo,
             resumen,
@@ -204,14 +201,14 @@ router.post('/contenido', async (req, res) => {
         // Recargar el contenido para asegurarte de que tiene las asociaciones
         await nuevoContenido.reload();
 
-        // Asociar los géneros, si se proporcionaron
+        // Asociar los géneros, si es que se proporcionaron
         if (generos && generos.length > 0) {
             await nuevoContenido.setGeneros(generos);
         }
 
         // Manejar actores
         if (actores && actores.length > 0) {
-            const actoresInstancias = [];  // Array para almacenar instancias de actores
+            const actoresInstancias = [];
 
             for (const actor of actores) {
                 const { nombre, apellido } = actor;
@@ -234,7 +231,6 @@ router.post('/contenido', async (req, res) => {
             await nuevoContenido.setActores(actoresInstancias);
         }
 
-        // Obtener el contenido recién creado con los géneros y actores asociados
         const contenidoCompleto = await Contenido.findByPk(nuevoContenido.ID, {
             include: [
                 {
@@ -253,7 +249,7 @@ router.post('/contenido', async (req, res) => {
         res.status(201).json(contenidoCompleto);
 
     } catch (error) {
-        console.error('Error al crear contenido:', error); // Mostrar error completo en la consola
+        console.error('Error al crear contenido:', error);
         res.status(500).json({ error: 'Ocurrió un error al crear el contenido', details: error.message });
     }
 })
@@ -295,13 +291,12 @@ router.put('/contenido/:id', async (req, res) => {
         }
     }
 
-    // Actualizar el contenido
     try {
         await contenido.update({
             titulo,
             resumen,
             temporadas,
-            duracion,  // Se mantiene como string
+            duracion,
             id_categoria,
             enlaces_trailer
         });
@@ -323,20 +318,16 @@ router.put('/contenido/:id', async (req, res) => {
                     where: { nombre, apellido }
                 });
 
-                // Si el actor no existe, crear uno nuevo
                 if (!actorExistente) {
                     actorExistente = await Actor.create({ nombre, apellido });
                 }
 
-                // Agregar la instancia del actor al array
                 actoresInstancias.push(actorExistente);
             }
 
-            // Asociar los actores actualizados con el contenido
             await contenido.setActores(actoresInstancias);
         }
 
-        // Obtener el contenido actualizado con géneros y actores asociados
         const contenidoActualizado = await Contenido.findByPk(contenido.ID, {
             include: [
                 {
@@ -352,7 +343,7 @@ router.put('/contenido/:id', async (req, res) => {
             ]
         });
 
-        res.json(contenidoActualizado); // Devolver el contenido actualizado con géneros y actores
+        res.json(contenidoActualizado);
     } catch (error) {
         res.status(500).json({ error: 'Ocurrió un error al actualizar el contenido', details: error.message });
     }
@@ -362,7 +353,7 @@ router.put('/contenido/:id', async (req, res) => {
 // Eliminar contenido por ID
 router.delete('/contenido/:id', async (req, res) => {
     try {
-        // Verificar si el contenido existe
+        // Verificando si el contenido existe
         const contenido = await Contenido.findByPk(req.params.id);
         if (!contenido) {
             return res.status(404).json({ error: 'Contenido no encontrado para eliminar. Ingrese un ID valido!.' });
@@ -372,7 +363,6 @@ router.delete('/contenido/:id', async (req, res) => {
         await contenido.setActores([]);  // Eliminar todas las relaciones con actores
         await contenido.setGeneros([]); // Esto elimina todas las asociaciones con géneros
 
-        // Eliminar el contenido
         await contenido.destroy();
         res.json({ message: 'Contenido eliminado correctamente!.' });
     } catch (error) {
