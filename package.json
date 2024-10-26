@@ -4,6 +4,7 @@
   "description": "## Descripción del Proyecto",
   "main": "app.js",
   "scripts": {
+    "start": "node --watch ./app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
