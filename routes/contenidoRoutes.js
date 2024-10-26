@@ -161,9 +161,103 @@ router.get('/contenido/:id', async (req, res) => {
 })
 
 
-router.post('/', (req, res) => {
-    // Add new content
-});
+// Crear nuevo contenido
+router.post('/contenido', async (req, res) => {
+    const { titulo, resumen, temporadas, duracion, id_categoria, enlaces_trailer, generos, actores } = req.body;
+
+    // Validaciones de entrada
+    if (!titulo || typeof titulo !== 'string' || titulo.trim().length === 0) {
+        return res.status(400).json({ error: 'El título es obligatorio y debe ser una cadena de texto.' });
+    }
+
+    if (temporadas !== undefined && (!Number.isInteger(temporadas) || temporadas < 0)) {
+        return res.status(400).json({ error: 'El número de temporadas debe ser un entero positivo.' });
+    }
+
+    if (duracion !== undefined && (!Number.isInteger(duracion) || duracion < 0)) {
+        return res.status(400).json({ error: 'La duración debe ser un entero positivo.' });
+    }
+
+    // Validar que id_categoria solo sea 1 o 2
+    if (id_categoria !== 1 && id_categoria !== 2) {
+        return res.status(400).json({ error: 'La categoría debe ser 1 o 2.' });
+    }
+
+    // Verificar si id_categoria existe en la tabla categorias
+    const categoria = await Categoria.findByPk(id_categoria);
+    if (!categoria) {
+        return res.status(400).json({ error: 'La categoría especificada no existe.' });
+    }
+
+
+    try {
+        // Crear el nuevo contenido
+        const nuevoContenido = await Contenido.create({
+            titulo,
+            resumen,
+            temporadas,
+            duracion,
+            id_categoria,
+            enlaces_trailer
+        });
+
+        // Recargar el contenido para asegurarte de que tiene las asociaciones
+        await nuevoContenido.reload();
+
+        // Asociar los géneros, si se proporcionaron
+        if (generos && generos.length > 0) {
+            await nuevoContenido.setGeneros(generos);
+        }
+
+        // Manejar actores
+        if (actores && actores.length > 0) {
+            const actoresInstancias = [];  // Array para almacenar instancias de actores
+
+            for (const actor of actores) {
+                const { nombre, apellido } = actor;
+
+                // Buscar si el actor ya existe por nombre y apellido
+                let actorExistente = await Actor.findOne({
+                    where: { nombre, apellido }
+                });
+
+                // Si el actor no existe, crear uno nuevo
+                if (!actorExistente) {
+                    actorExistente = await Actor.create({ nombre, apellido });
+                }
+
+                // Agregar la instancia del actor al array
+                actoresInstancias.push(actorExistente);
+            }
+
+            // Usar 'setActores' para asociar todos los actores con el contenido
+            await nuevoContenido.setActores(actoresInstancias);
+        }
+
+        // Obtener el contenido recién creado con los géneros y actores asociados
+        const contenidoCompleto = await Contenido.findByPk(nuevoContenido.ID, {
+            include: [
+                {
+                    model: Genero,
+                    as: 'generos',
+                    attributes: ['ID', 'nombre_genero']
+                },
+                {
+                    model: Actor,
+                    as: 'actores',
+                    attributes: ['nombre', 'apellido']
+                }
+            ]
+        });
+
+        res.status(201).json(contenidoCompleto);
+
+    } catch (error) {
+        console.error('Error al crear contenido:', error); // Mostrar error completo en la consola
+        res.status(500).json({ error: 'Ocurrió un error al crear el contenido', details: error.message });
+    }
+})
+
 
 
 router.put('/:id', (req, res) => {
