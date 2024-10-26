@@ -78,20 +78,18 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
 ```json
    {
-
       "id_categoria": 1,
       "titulo": "Nuevo Contenido",
       "resumen": "Descripción del nuevo contenido.",
       "enlaces_trailer": "https://www.youtube.com/watch?v=_1f2RLdxQfA",
       "duracion": 120,
       "generos": [1, 2, 9],
-      "actores": [
-
+      "actores": 
+      [
          { "nombre": "Chris", "apellido": "Pratt" },
          { "nombre": "Anya", "apellido": "Taylor-Joy" }
 
       ]
-
    }
 ```
 
@@ -101,7 +99,6 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
 ```json
    {
-
       "id_categoria": 2,
       "titulo": "Super Mario Bros 2",
       "resumen": "Dos hermanos plomeros, Mario y Luigi, caen por las alcantarillas y llegan a un mundo subterráneo mágico en el que deben enfrentarse al malvado Bowser para 
@@ -109,13 +106,12 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
       "enlaces_trailer": "https://www.youtube.com/watch?v=GIJIESOZALQ&ab_channel=TrailersTC",
       "duracion": "105 minutos",
       "generos": [1, 2, 4, 9, 10, 11],
-      "actores": [
-
+      "actores": 
+      [
          { "nombre": "Jack", "apellido": "Black" },
          { "nombre": "Charlie", "apellido": "Day" }
 
       ]
-
    }
 ```
 
