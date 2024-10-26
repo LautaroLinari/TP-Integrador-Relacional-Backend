@@ -63,22 +63,24 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
 3. **POST /contenido**
    Crea un nuevo contenido con el siguiente formato:
+
    {
-    "id_categoria": 1
-    "titulo": "Nuevo Contenido",
-    "resumen": "Descripción del nuevo contenido.",
-    "enlaces_trailer": "https://www.youtube.com/watch?v=_1f2RLdxQfA",
-    "duracion": 120,
-    "generos": [1, 2, 9],
-    "actores": 
-    [
-        { "nombre": "Chris", "apellido": "Pratt" },
-        { "nombre": "Anya", "apellido": "Taylor-Joy" }
-    ]
+      "id_categoria": 1
+      "titulo": "Nuevo Contenido",
+      "resumen": "Descripción del nuevo contenido.",
+      "enlaces_trailer": "https://www.youtube.com/watch?v=_1f2RLdxQfA",
+      "duracion": 120,
+      "generos": [1, 2, 9],
+      "actores": 
+      [
+         { "nombre": "Chris", "apellido": "Pratt" },
+         { "nombre": "Anya", "apellido": "Taylor-Joy" }
+      ]
    }
 
 4. **PUT /contenido/:id**
    Actualiza un contenido específico por ID con el siguiente formato:
+
    {
       "id_categoria": 2,
       "titulo": "Super Mario Bros 2",
@@ -105,12 +107,17 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    Filtra contenidos por título, género o categoría (puede ser parcial o total).
 
    Query Parameters:
+
    titulo: Filtra por título.
+
    nombre_genero: Filtra por nombre de género.
+
    nombre_categoria: Filtra por nombre de categoría.
+
 
    Ejemplos: 
    GET http://localhost:3000/contenido/filter?nombre_genero=Drama
+
    GET http://localhost:3000/contenido/filter?nombre_categoria=Pelí
 
 
