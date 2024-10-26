@@ -7,7 +7,9 @@ Proporciona funcionalidades para gestionar contenidos, incluyendo su creación, 
 ## Descripción
 
 Esta API permite gestionar diferentes contenidos, cada uno asociado a actores, géneros y categorías. 
+
 Los principales endpoints permiten realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre los contenidos y realizar búsquedas filtradas según diversos criterios.
+
 En este proyecto se usa una arquitectura por capas para mantener el proyecto limpio y ordenado,  como la utilización de Controllers para las cada una de las rutas(endpoints).
 
 

@@ -250,6 +250,7 @@ const deleteContenidoById = async (req, res) => {
     }
 };
 
+//Exportando funciones para utilizarlo en el archivo de rutas
 module.exports = {
     filterContenidos,
     getAllContenidos,
