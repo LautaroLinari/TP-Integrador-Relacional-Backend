@@ -36,8 +36,11 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    npm install express mysql mysql2 sequelize
 
 3. **Descarga los archivos SQL**
+   
    Primero ingresa a Mysql Workbench y a su usuario root.
+
    Luego ejecuta el archivo trailerflix.sql para que le genere la BD junto con sus tablas.
+
    Luego ejecuta el archivo insert-datos-tablas.sql para cargar datos en las tablas.
 
 
@@ -61,43 +64,65 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
 ## Endpoints de Agregación y Actualización
 
-3. **POST /contenido**
+1. **POST /contenido**
    Crea un nuevo contenido con el siguiente formato:
 
    {
+
       "id_categoria": 1
+
       "titulo": "Nuevo Contenido",
+
       "resumen": "Descripción del nuevo contenido.",
+
       "enlaces_trailer": "https://www.youtube.com/watch?v=_1f2RLdxQfA",
+
       "duracion": 120,
+
       "generos": [1, 2, 9],
-      "actores": 
-      [
+
+      "actores": [
+
          { "nombre": "Chris", "apellido": "Pratt" },
+
          { "nombre": "Anya", "apellido": "Taylor-Joy" }
+
       ]
+
    }
 
-4. **PUT /contenido/:id**
+2. **PUT /contenido/:id**
    Actualiza un contenido específico por ID con el siguiente formato:
 
    {
+
       "id_categoria": 2,
+
       "titulo": "Super Mario Bros 2",
-      "resumen": "Dos hermanos plomeros, Mario y Luigi, caen por las alcantarillas y llegan a un mundo subterráneo mágico en el que deben enfrentarse al malvado Bowser para rescatar a la princesa Peach.",
+
+      "resumen": "Dos hermanos plomeros, Mario y Luigi, caen por las alcantarillas y llegan a un mundo subterráneo mágico en el que deben enfrentarse al malvado Bowser para 
+      rescatar a la princesa Peach.",
+
       "enlaces_trailer": "https://www.youtube.com/watch?v=GIJIESOZALQ&ab_channel=TrailersTC",
+
       "duracion": "105 minutos",
+
       "generos": [1, 2, 4, 9, 10, 11],
+
       "actores": [
+
          { "nombre": "Jack", "apellido": "Black" },
+
          { "nombre": "Charlie", "apellido": "Day" }
+
       ]
+
    }
 
 
 ## Endpoint de Eliminación
 
-5. **DELETE /contenido:id**
+1. **DELETE /contenido:id**
    Elimina un contenido específico por ID.
 
 
@@ -124,12 +149,14 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 ## Manejo de Errores
 
 La API maneja errores y devuelve códigos de estado HTTP apropiados. 
+
 Se puede recibir un mensaje de error detallado en caso de fallos en la creación o actualización de contenidos.
 
 
 ## Contribuciones
 
 Las contribuciones son más que bienvenidas. 
+
 Si deseas colaborar, por favor, abre un issue o un pull request.
 
 
