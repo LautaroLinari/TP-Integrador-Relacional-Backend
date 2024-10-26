@@ -8,6 +8,7 @@ Proporciona funcionalidades para gestionar contenidos, incluyendo su creación, 
 
 Esta API permite gestionar diferentes contenidos, cada uno asociado a actores, géneros y categorías. 
 Los principales endpoints permiten realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre los contenidos y realizar búsquedas filtradas según diversos criterios.
+En este proyecto se usa una arquitectura por capas para mantener el proyecto limpio y ordenado,  como la utilización de Controllers para las cada una de las rutas(endpoints).
 
 
 ## Tecnologías Utilizadas
@@ -22,7 +23,7 @@ Los principales endpoints permiten realizar operaciones CRUD (Crear, Leer, Actua
 
 Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
-- Node.js y npm (Node Package Manager)
+- Node.js y NPM (Node Package Manager)
 - Mysql Workbench
 
 
@@ -50,16 +51,16 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    npm start
 
 2. **Accede a la API**
-   Ya sea desde el archivo api.http o desde su navegador.
+   Ya sea desde el archivo api.http (Para utilizar api.http es necesario tener instalado la extensión "Rest Client" en VSC) o desde su navegador predeterminado.
 
 
 ## Endpoints de Busqueda
 
 1. **GET /contenido**
-   Obtiene todos los contenidos con sus actores, géneros y categoría.
+   Obtiene todos los contenidos con sus respectivos actores, géneros y categoría.
 
 2. **GET /contenido:id**
-   Obtiene un contenido específico por ID con sus respectivos géneros, actores y categorías.
+   Obtiene un contenido específico por ID con sus respectivos actores, géneros y categorías.
 
 
 ## Endpoints de Agregación y Actualización
