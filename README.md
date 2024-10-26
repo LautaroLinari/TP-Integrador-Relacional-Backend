@@ -1,6 +1,7 @@
 # Trabajo Practico Integrador Relacional Backend
 
 Este trabajo es una API REST construida con Node.js, Express, MySQL Workbench y Sequelize. 
+
 Proporciona funcionalidades para gestionar contenidos, incluyendo su creación, actualización, eliminación y filtrado.
 
 
@@ -50,24 +51,29 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 ## Uso
 
 1. **Inicia el servidor**
+   
    npm start
 
 2. **Accede a la API**
+   
    Ya sea desde el archivo api.http (Para utilizar api.http es necesario tener instalado la extensión "Rest Client" en VSC) o desde su navegador predeterminado.
 
 
 ## Endpoints de Busqueda
 
 1. **GET /contenido**
+   
    Obtiene todos los contenidos con sus respectivos actores, géneros y categoría.
 
 2. **GET /contenido:id**
+   
    Obtiene un contenido específico por ID con sus respectivos actores, géneros y categorías.
 
 
 ## Endpoints de Agregación y Actualización
 
 1. **POST /contenido**
+   
    Crea un nuevo contenido con el siguiente formato:
 
    {
@@ -95,6 +101,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    }
 
 2. **PUT /contenido/:id**
+   
    Actualiza un contenido específico por ID con el siguiente formato:
 
    {
@@ -126,12 +133,14 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 ## Endpoint de Eliminación
 
 1. **DELETE /contenido:id**
+   
    Elimina un contenido específico por ID.
 
 
 ## Filtrado de contenidos
 
 1. **GET /contenido/filter**
+   
    Filtra contenidos por título, género o categoría (puede ser parcial o total).
 
    Query Parameters:
