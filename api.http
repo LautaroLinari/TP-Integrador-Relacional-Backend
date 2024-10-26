@@ -2,10 +2,10 @@
 GET http://localhost:3000/contenido
 
 ### Obtener contenido por ID con sus asociaciones
-GET http://localhost:3000/contenido/99
+GET http://localhost:3000/contenido/20
 
 ### Filtrar contenidos por título parcial o completo
-GET http://localhost:3000/contenido/filter?titulo=Mario
+GET http://localhost:3000/contenido/filter?titulo=Flash
 
 ### Filtrar contenidos por nombre de género parcial o completo
 GET http://localhost:3000/contenido/filter?nombre_genero=Histo
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 
 ### Actualizar contenido por ID (Agregandole más generos y reemplazando los actores)
-PUT http://localhost:3000/contenido/99
+PUT http://localhost:3000/contenido/100
 Content-Type: application/json
 
 {
@@ -52,4 +52,4 @@ Content-Type: application/json
 
 
 ### Eliminar contenido por ID
-DELETE http://localhost:3000/contenido/99
+DELETE http://localhost:3000/contenido/100

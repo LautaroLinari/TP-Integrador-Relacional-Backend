@@ -50,7 +50,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    Ya sea desde el archivo api.http o desde su navegador.
 
 
-## Endpoints
+## Endpoints de Busqueda
 
 1. **GET /contenido**
    Obtiene todos los contenidos con sus actores, géneros y categoría.
@@ -58,24 +58,42 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 2. **GET /contenido:id**
    Obtiene un contenido específico por ID con sus respectivos géneros, actores y categorías.
 
+
+## Endpoints de Agregación y Actualización
+
 3. **POST /contenido**
    Crea un nuevo contenido con el siguiente formato:
    {
-    "ID": 11,
     "id_categoria": 1
     "titulo": "Nuevo Contenido",
     "resumen": "Descripción del nuevo contenido.",
-    "temporadas": 2
+    "enlaces_trailer": "https://www.youtube.com/watch?v=_1f2RLdxQfA",
+    "duracion": 120,
+    "generos": [1, 2, 9],
+    "actores": 
+    [
+        { "nombre": "Chris", "apellido": "Pratt" },
+        { "nombre": "Anya", "apellido": "Taylor-Joy" }
+    ]
    }
 
 4. **PUT /contenido/:id**
    Actualiza un contenido específico por ID con el siguiente formato:
    {
-    "titulo": "Contenido Actualizado",
-    "resumen": "Descripción actualizada del contenido.",
-    "temporadas": 3,
-    "id_categoria": 1
+      "id_categoria": 2,
+      "titulo": "Super Mario Bros 2",
+      "resumen": "Dos hermanos plomeros, Mario y Luigi, caen por las alcantarillas y llegan a un mundo subterráneo mágico en el que deben enfrentarse al malvado Bowser para rescatar a la princesa Peach.",
+      "enlaces_trailer": "https://www.youtube.com/watch?v=GIJIESOZALQ&ab_channel=TrailersTC",
+      "duracion": "105 minutos",
+      "generos": [1, 2, 4, 9, 10, 11],
+      "actores": [
+         { "nombre": "Jack", "apellido": "Black" },
+         { "nombre": "Charlie", "apellido": "Day" }
+      ]
    }
+
+
+## Endpoint de Eliminación
 
 5. **DELETE /contenido:id**
    Elimina un contenido específico por ID.
@@ -114,7 +132,7 @@ Si deseas colaborar, por favor, abre un issue o un pull request.
 - Tener diseñadas las tablas en DB Designer, con el archivo SQL generado y los primeros endpoints funcionando.
 
 
-- **Presentación Final**: 24 de Octubre de 2024
+- **Presentación Final**: 31 de Octubre de 2024
 - Proyecto completo con CRUD y toda la documentación.
 
 
