@@ -16,33 +16,27 @@ Actor.belongsToMany(Contenido, {
     through: 'contenido_actores', 
     foreignKey: 'ID_actor', 
     as: 'contenidos',
-    timestamps: false  // Deshabilitar createdAt y updatedAt en la tabla intermedia
+    timestamps: false  
 });
 
-// Similar con otras relaciones que tienen una tabla intermedia
 Contenido.belongsToMany(Genero, { 
     through: 'contenido_generos', 
     foreignKey: 'ID_contenido', 
     as: 'generos',
-    timestamps: false  // Deshabilitar createdAt y updatedAt en la tabla intermedia
+    timestamps: false  
 });
 
 Genero.belongsToMany(Contenido, { 
     through: 'contenido_generos', 
     foreignKey: 'ID_genero', 
     as: 'contenidos',
-    timestamps: false  // Deshabilitar createdAt y updatedAt en la tabla intermedia
+    timestamps: false 
 });
 
 // Relación uno a muchos entre Contenido y Categoría
 Contenido.belongsTo(Categoria, { foreignKey: 'id_categoria', as: 'categoria' });
 Categoria.hasMany(Contenido, { foreignKey: 'id_categoria', as: 'contenidos' });
 
-// //Comprobar asociaciones
-// console.log('Contenido Associations:', Contenido.associations);
-// console.log('Actor Associations:', Actor.associations);
-// console.log('Genero Associations:', Genero.associations);
-// console.log('Categoria Associations:', Categoria.associations);
 
 // Exportar modelos
 module.exports = { Actor, Contenido, Genero, Categoria }
