@@ -35,7 +35,7 @@ const filterContenidos = async (req, res) => {
         });
 
         if (resultados.length === 0) {
-            return res.status(404).json({ message: 'No se encontraron contenidos que coincidan con los filtros.' });
+            return res.status(404).json({ message: 'No se encontraron contenidos que coincidan con los filtros ingresados.' });
         }
 
         res.json({ count: resultados.length, rows: resultados });
@@ -74,8 +74,14 @@ const getAllContenidos = async (req, res) => {
 
 // Obtener contenido por ID
 const getContenidoById = async (req, res) => {
+    const contenidoId = req.params.id;
+
+    if (isNaN(contenidoId)) {
+        return res.status(400).json({ error: 'El ID debe ser un número válido.' });
+    }
+
     try {
-        const contenido = await Contenido.findByPk(req.params.id, {
+        const contenido = await Contenido.findByPk(contenidoId, {
             attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
             include: [
                 { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] },
@@ -85,7 +91,7 @@ const getContenidoById = async (req, res) => {
         });
 
         if (!contenido) {
-            return res.status(404).json({ error: 'Contenido no encontrado' });
+            return res.status(404).json({ error: 'Contenido no encontrado por ese ID!' });
         }
 
         //Lo utilizo para comprobar si tiene temporadas o duración
@@ -162,11 +168,17 @@ const createContenido = async (req, res) => {
 
 // Actualizar contenido por ID
 const updateContenidoById = async (req, res) => {
+    const contenidoId = req.params.id;
+
+    if (isNaN(contenidoId)) {
+        return res.status(400).json({ error: 'El ID debe ser un número válido.' });
+    }
+
     const { titulo, resumen, temporadas, duracion, id_categoria, enlaces_trailer, generos, actores } = req.body;
 
     try {
-        const contenido = await Contenido.findByPk(req.params.id);
-        if (!contenido) return res.status(404).json({ error: 'Contenido no encontrado' });
+        const contenido = await Contenido.findByPk(contenidoId);
+        if (!contenido) return res.status(404).json({ error: 'Contenido no encontrado para actualizar/modificar!' });
 
         await contenido.update({
             titulo,
@@ -209,9 +221,16 @@ const updateContenidoById = async (req, res) => {
 
 // Eliminar contenido por ID
 const deleteContenidoById = async (req, res) => {
+    const contenidoId = req.params.id;
+
+    // Verificación si el ID es un número
+    if (isNaN(contenidoId)) {
+        return res.status(400).json({ error: 'El ID debe ser un número válido.' });
+    }
+
     try {
-        const contenido = await Contenido.findByPk(req.params.id);
-        if (!contenido) return res.status(404).json({ error: 'Contenido no encontrado' });
+        const contenido = await Contenido.findByPk(contenidoId);
+        if (!contenido) return res.status(404).json({ error: 'Contenido no encontrado por ese ID para Eliminar!' });
 
         await contenido.setActores([]);
         await contenido.setGeneros([]);
