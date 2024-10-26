@@ -259,15 +259,126 @@ router.post('/contenido', async (req, res) => {
 })
 
 
+// Actualizar contenido por ID
+router.put('/contenido/:id', async (req, res) => {
+    const { titulo, resumen, temporadas, duracion, id_categoria, enlaces_trailer, generos, actores } = req.body;
 
-router.put('/:id', (req, res) => {
-    // Update content by ID
-});
+    // Validaciones de entrada
+    if (titulo !== undefined && (typeof titulo !== 'string' || titulo.trim().length === 0)) {
+        return res.status(400).json({ error: 'El título debe ser una cadena de texto válida.' });
+    }
+
+    if (temporadas !== undefined && (!Number.isInteger(temporadas) || temporadas < 0)) {
+        return res.status(400).json({ error: 'El número de temporadas debe ser un entero positivo.' });
+    }
+
+    if (duracion !== undefined && (typeof duracion !== 'string' || duracion.trim().length === 0)) {
+        return res.status(400).json({ error: 'La duración debe ser una cadena de texto válida.' });
+    }
+
+    // Validar que id_categoria solo sea 1 o 2
+    if (id_categoria !== undefined && id_categoria !== 1 && id_categoria !== 2) {
+        return res.status(400).json({ error: 'La categoría debe ser 1 o 2.' });
+    }
+
+    // Verificar si el contenido existe
+    const contenido = await Contenido.findByPk(req.params.id);
+    if (!contenido) {
+        return res.status(404).json({ error: 'Contenido no encontrado' });
+    }
+
+    // Verificar si id_categoria existe en la tabla categorias
+    if (id_categoria !== undefined) {
+        const categoria = await Categoria.findByPk(id_categoria);
+        if (!categoria) {
+            return res.status(400).json({ error: 'La categoría especificada no existe.' });
+        }
+    }
+
+    // Actualizar el contenido
+    try {
+        await contenido.update({
+            titulo,
+            resumen,
+            temporadas,
+            duracion,  // Se mantiene como string
+            id_categoria,
+            enlaces_trailer
+        });
+
+        // Actualizar los géneros, si se proporcionan
+        if (generos && generos.length > 0) {
+            await contenido.setGeneros(generos);
+        }
+
+        // Actualizar los actores, si se proporcionan
+        if (actores && actores.length > 0) {
+            const actoresInstancias = [];
+
+            for (const actor of actores) {
+                const { nombre, apellido } = actor;
+
+                // Buscar si el actor ya existe por nombre y apellido
+                let actorExistente = await Actor.findOne({
+                    where: { nombre, apellido }
+                });
+
+                // Si el actor no existe, crear uno nuevo
+                if (!actorExistente) {
+                    actorExistente = await Actor.create({ nombre, apellido });
+                }
+
+                // Agregar la instancia del actor al array
+                actoresInstancias.push(actorExistente);
+            }
+
+            // Asociar los actores actualizados con el contenido
+            await contenido.setActores(actoresInstancias);
+        }
+
+        // Obtener el contenido actualizado con géneros y actores asociados
+        const contenidoActualizado = await Contenido.findByPk(contenido.ID, {
+            include: [
+                {
+                    model: Genero,
+                    as: 'generos',
+                    attributes: ['ID', 'nombre_genero']
+                },
+                {
+                    model: Actor,
+                    as: 'actores',
+                    attributes: ['nombre', 'apellido']
+                }
+            ]
+        });
+
+        res.json(contenidoActualizado); // Devolver el contenido actualizado con géneros y actores
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al actualizar el contenido', details: error.message });
+    }
+})
 
 
-router.delete('/:id', (req, res) => {
-    // Delete content by ID
-});
+// Eliminar contenido por ID
+router.delete('/contenido/:id', async (req, res) => {
+    try {
+        // Verificar si el contenido existe
+        const contenido = await Contenido.findByPk(req.params.id);
+        if (!contenido) {
+            return res.status(404).json({ error: 'Contenido no encontrado para eliminar. Ingrese un ID valido!.' });
+        }
+
+        // Eliminar las asociaciones en la tabla intermedia
+        await contenido.setActores([]);  // Eliminar todas las relaciones con actores
+        await contenido.setGeneros([]); // Esto elimina todas las asociaciones con géneros
+
+        // Eliminar el contenido
+        await contenido.destroy();
+        res.json({ message: 'Contenido eliminado correctamente!.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al eliminar el contenido', details: error.message });
+    }
+})
 
 
 module.exports = router;
