@@ -1,0 +1,233 @@
+const { Contenido, Actor, Genero, Categoria } = require('../models/relaciones');
+const { Sequelize } = require('sequelize');
+const Op = Sequelize.Op;
+
+// Filtrar contenidos por título, género y/o categoría
+const filterContenidos = async (req, res) => {
+    const { titulo, nombre_genero, nombre_categoria } = req.query;
+
+    let where = {};
+    if (titulo) {
+        where.titulo = { [Op.like]: `%${titulo}%` };
+    }
+
+    const generoCondition = nombre_genero ? { nombre_genero: { [Op.like]: `%${nombre_genero}%` } } : {};
+    const categoriaCondition = nombre_categoria ? { nombre_categoria: { [Op.like]: `%${nombre_categoria}%` } } : {};
+
+    try {
+        const contenidos = await Contenido.findAndCountAll({
+            where,
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
+            include: [
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] },
+                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'], where: generoCondition },
+                { model: Categoria, as: 'categoria', attributes: ['nombre_categoria'], where: categoriaCondition }
+            ]
+        });
+
+        //Lo utilizo para comprobar si tiene temporadas o duración
+        const resultados = contenidos.rows.map(contenido => {
+            const contenidoData = contenido.get({ plain: true });
+            if (contenidoData.temporadas === null) {
+                delete contenidoData.temporadas;
+            }
+            return contenidoData;
+        });
+
+        if (resultados.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron contenidos que coincidan con los filtros.' });
+        }
+
+        res.json({ count: resultados.length, rows: resultados });
+    } catch (error) {
+        console.error('Error al filtrar contenidos:', error);
+        res.status(500).json({ error: 'Ocurrió un error al filtrar los contenidos', details: error.message });
+    }
+};
+
+// Obtener todos los contenidos
+const getAllContenidos = async (req, res) => {
+    try {
+        const contenidos = await Contenido.findAll({
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
+            include: [
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] },
+                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'] },
+                { model: Categoria, as: 'categoria', attributes: ['nombre_categoria'] }
+            ]
+        });
+
+        //Lo utilizo para comprobar si tiene temporadas o duración
+        const resultados = contenidos.map(contenido => {
+            const contenidoData = contenido.get({ plain: true });
+            if (contenidoData.temporadas === null) {
+                delete contenidoData.temporadas;
+            }
+            return contenidoData;
+        });
+
+        res.status(200).json(resultados);
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al obtener los contenidos', details: error.message });
+    }
+};
+
+// Obtener contenido por ID
+const getContenidoById = async (req, res) => {
+    try {
+        const contenido = await Contenido.findByPk(req.params.id, {
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
+            include: [
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] },
+                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'] },
+                { model: Categoria, as: 'categoria', attributes: ['nombre_categoria'] }
+            ]
+        });
+
+        if (!contenido) {
+            return res.status(404).json({ error: 'Contenido no encontrado' });
+        }
+
+        //Lo utilizo para comprobar si tiene temporadas o duración
+        const contenidoData = contenido.get({ plain: true });
+        if (contenidoData.temporadas === null) {
+            delete contenidoData.temporadas;
+        }
+
+        res.status(200).json(contenidoData);
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al obtener el contenido', details: error.message });
+    }
+};
+
+// Crear nuevo contenido
+const createContenido = async (req, res) => {
+    const { titulo, resumen, temporadas, duracion, id_categoria, enlaces_trailer, generos, actores } = req.body;
+
+    if (!titulo || typeof titulo !== 'string' || titulo.trim().length === 0) {
+        return res.status(400).json({ error: 'El título es obligatorio y debe ser una cadena de texto.' });
+    }
+
+    if (temporadas !== undefined && (!Number.isInteger(temporadas) || temporadas < 0)) {
+        return res.status(400).json({ error: 'El número de temporadas debe ser un entero positivo.' });
+    }
+
+    if (duracion !== undefined && (typeof duracion !== 'string' || duracion.trim().length === 0)) {
+        return res.status(400).json({ error: 'La duración debe ser una cadena de texto válida.' });
+    }
+
+    if (id_categoria !== 1 && id_categoria !== 2) {
+        return res.status(400).json({ error: 'La categoría debe ser 1 o 2.' });
+    }
+
+    try {
+        const nuevoContenido = await Contenido.create({
+            titulo,
+            resumen,
+            temporadas,
+            duracion,
+            id_categoria,
+            enlaces_trailer
+        });
+
+        if (generos && generos.length > 0) {
+            await nuevoContenido.setGeneros(generos);
+        }
+
+        //Lo utilizo para comprobar si tiene temporadas o duración
+        if (actores && actores.length > 0) {
+            const actoresInstancias = await Promise.all(
+                actores.map(async actor => {
+                    const [actorExistente] = await Actor.findOrCreate({
+                        where: { nombre: actor.nombre, apellido: actor.apellido }
+                    });
+                    return actorExistente;
+                })
+            );
+            await nuevoContenido.addActores(actoresInstancias);
+        }
+
+        const contenidoCompleto = await Contenido.findByPk(nuevoContenido.ID, {
+            include: [
+                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'] },
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] }
+            ]
+        });
+
+        res.status(201).json(contenidoCompleto);
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al crear el contenido', details: error.message });
+    }
+};
+
+// Actualizar contenido por ID
+const updateContenidoById = async (req, res) => {
+    const { titulo, resumen, temporadas, duracion, id_categoria, enlaces_trailer, generos, actores } = req.body;
+
+    try {
+        const contenido = await Contenido.findByPk(req.params.id);
+        if (!contenido) return res.status(404).json({ error: 'Contenido no encontrado' });
+
+        await contenido.update({
+            titulo,
+            resumen,
+            temporadas,
+            duracion,
+            id_categoria,
+            enlaces_trailer
+        });
+
+        if (generos && generos.length > 0) {
+            await contenido.setGeneros(generos);
+        }
+
+        //Lo utilizo para comprobar si tiene temporadas o duración
+        if (actores && actores.length > 0) {
+            const actoresInstancias = await Promise.all(
+                actores.map(async actor => {
+                    const [actorExistente] = await Actor.findOrCreate({
+                        where: { nombre: actor.nombre, apellido: actor.apellido }
+                    });
+                    return actorExistente;
+                })
+            );
+            await contenido.addActores(actoresInstancias);
+        }
+
+        const contenidoActualizado = await Contenido.findByPk(contenido.ID, {
+            include: [
+                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'] },
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] }
+            ]
+        });
+
+        res.status(200).json(contenidoActualizado);
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al actualizar el contenido', details: error.message });
+    }
+};
+
+// Eliminar contenido por ID
+const deleteContenidoById = async (req, res) => {
+    try {
+        const contenido = await Contenido.findByPk(req.params.id);
+        if (!contenido) return res.status(404).json({ error: 'Contenido no encontrado' });
+
+        await contenido.setActores([]);
+        await contenido.setGeneros([]);
+        await contenido.destroy();
+
+        res.status(200).json({ message: 'Contenido eliminado correctamente' });
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al eliminar el contenido', details: error.message });
+    }
+};
+
+module.exports = {
+    filterContenidos,
+    getAllContenidos,
+    getContenidoById,
+    createContenido,
+    updateContenidoById,
+    deleteContenidoById
+};

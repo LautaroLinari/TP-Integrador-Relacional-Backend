@@ -22,7 +22,7 @@ Content-Type: application/json
     "titulo": "Mario Bros",
     "resumen": "Dos hermanos plomeros, Mario y Luigi, caen por las alcantarillas y llegan a un mundo subterráneo mágico en el que deben enfrentarse al malvado Bowser para rescatar a la princesa Peach.",
     "enlaces_trailer": "https://www.youtube.com/watch?v=_1f2RLdxQfA",
-    "duracion": 120,
+    "duracion": "120 minutos",
     "generos": [1, 2, 9],
     "actores": 
     [
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 
 ### Actualizar contenido por ID (Agregandole más generos y reemplazando los actores)
-PUT http://localhost:3000/contenido/100
+PUT http://localhost:3000/contenido/101
 Content-Type: application/json
 
 {
@@ -52,4 +52,4 @@ Content-Type: application/json
 
 
 ### Eliminar contenido por ID
-DELETE http://localhost:3000/contenido/100
+DELETE http://localhost:3000/contenido/101
