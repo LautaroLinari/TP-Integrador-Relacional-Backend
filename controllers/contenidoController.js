@@ -41,7 +41,7 @@ const filterContenidos = async (req, res) => {
         res.json({ count: resultados.length, rows: resultados });
     } catch (error) {
         console.error('Error al filtrar contenidos:', error);
-        res.status(500).json({ error: 'Ocurrió un error al filtrar los contenidos', details: error.message });
+        res.status(500).json({ error: 'Ocurrió un error al filtrar los contenidos'});
     }
 };
 
@@ -68,7 +68,7 @@ const getAllContenidos = async (req, res) => {
 
         res.status(200).json(resultados);
     } catch (error) {
-        res.status(500).json({ error: 'Ocurrió un error al obtener los contenidos', details: error.message });
+        res.status(500).json({ error: 'Ocurrió un error al obtener los contenidos'});
     }
 };
 
@@ -102,7 +102,7 @@ const getContenidoById = async (req, res) => {
 
         res.status(200).json(contenidoData);
     } catch (error) {
-        res.status(500).json({ error: 'Ocurrió un error al obtener el contenido', details: error.message });
+        res.status(500).json({ error: 'Ocurrió un error al obtener el contenido'});
     }
 };
 
@@ -125,7 +125,7 @@ const createContenido = async (req, res) => {
     if (id_categoria !== 1 && id_categoria !== 2) {
         return res.status(400).json({ error: 'La categoría debe ser 1 o 2.' });
     }
-    
+
     if (generos && !Array.isArray(generos)) {
             return res.status(400).json({ error: 'Generos debe ser un array de IDs.' });
     }
@@ -170,7 +170,7 @@ const createContenido = async (req, res) => {
 
         res.status(201).json(contenidoCompleto);
     } catch (error) {
-        res.status(500).json({ error: 'Ocurrió un error al crear el contenido', details: error.message });
+        res.status(500).json({ error: 'Ocurrió un error al crear el contenido'});
     }
 };
 
@@ -223,7 +223,7 @@ const updateContenidoById = async (req, res) => {
 
         res.status(200).json(contenidoActualizado);
     } catch (error) {
-        res.status(500).json({ error: 'Ocurrió un error al actualizar el contenido', details: error.message });
+        res.status(500).json({ error: 'Ocurrió un error al actualizar el contenido'});
     }
 };
 
@@ -246,7 +246,7 @@ const deleteContenidoById = async (req, res) => {
 
         res.status(200).json({ message: 'Contenido eliminado correctamente' });
     } catch (error) {
-        res.status(500).json({ error: 'Ocurrió un error al eliminar el contenido', details: error.message });
+        res.status(500).json({ error: 'Ocurrió un error al eliminar el contenido'});
     }
 };
 
