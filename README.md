@@ -76,6 +76,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    
    Crea un nuevo contenido con el siguiente formato:
 
+```json
    {
 
       "id_categoria": 1
@@ -99,11 +100,13 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
       ]
 
    }
+```
 
 2. **PUT /contenido/:id**
    
    Actualiza un contenido específico por ID con el siguiente formato:
 
+```json
    {
 
       "id_categoria": 2,
@@ -128,6 +131,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
       ]
 
    }
+```
 
 
 ## Endpoint de Eliminación
