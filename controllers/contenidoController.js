@@ -125,6 +125,14 @@ const createContenido = async (req, res) => {
     if (id_categoria !== 1 && id_categoria !== 2) {
         return res.status(400).json({ error: 'La categoría debe ser 1 o 2.' });
     }
+    
+    if (generos && !Array.isArray(generos)) {
+            return res.status(400).json({ error: 'Generos debe ser un array de IDs.' });
+    }
+    
+    if (actores && !Array.isArray(actores)) {
+            return res.status(400).json({ error: 'Actores debe ser un array de objetos con nombre y apellido.' });
+    }
 
     try {
         const nuevoContenido = await Contenido.create({
