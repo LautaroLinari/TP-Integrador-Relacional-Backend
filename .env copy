@@ -3,4 +3,3 @@ DBUSER=root
 //Colocar la password de tu usuario ROOT de Workbench
 PASSWORD= 
 HOST=localhost
-PORT=3307
