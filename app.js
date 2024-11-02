@@ -29,14 +29,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Ocurrió un error en el servidor', details: err.message });
 })
 
-
-// // Server
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`);
-// })
-
-const port = 3000;
+//Server
+const port = process.env.PORT || 3000;
 app.listen(port, async () => {
   await sequelize.authenticate()
   console.log(`Servidor Funcionando en http://localhost:${port}`)
