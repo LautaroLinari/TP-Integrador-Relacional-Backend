@@ -12,7 +12,7 @@ const sequelize = new Sequelize (
   {
   host: process.env.HOST,
   port: process.env.PORT,
-  dialect: 'mysql',        
+  dialect: process.env.DIALECT,        
 })
 
 module.exports = { sequelize }
