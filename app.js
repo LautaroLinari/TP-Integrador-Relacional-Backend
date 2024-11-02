@@ -1,18 +1,17 @@
 const express = require('express');
-const app = express();
 const contenidoRoutes = require('./routes/contenidoRoutes');
 const db = require('./conexion/database');
 const { sequelize } = require('./conexion/database');
+const app = express();
+const port = 3000;
 
-
-sequelize.sync()
+sequelize.authenticate()
   .then(() => {
-    console.log('Base de datos sincronizada.');
+    console.log('Conexión a la base de datos establecida correctamente.');
   })
   .catch((err) => {
-    console.error('Error al sincronizar la base de datos:', err);
+    console.error('No se pudo conectar a la base de datos:', err);
   })
-
 
 // Middlewares
 app.use(express.json());
@@ -32,8 +31,13 @@ app.use((err, req, res, next) => {
 })
 
 
-// Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+// // Server
+// const PORT = process.env.PORT || 3000;
+// app.listen(PORT, () => {
+//   console.log(`Server running on http://localhost:${PORT}`);
+// })
+
+app.listen(port, async () => {
+  await sequelize.authenticate()
+  console.log(`Servidor Funcionando en http://localhost:${port}`)
 })
