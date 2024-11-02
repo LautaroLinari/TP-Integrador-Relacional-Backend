@@ -12,7 +12,10 @@ const sequelize = new Sequelize (
   {
   host: process.env.HOST,
   port: process.env.PORT,
-  dialect: process.env.DIALECT,        
+  dialect: process.env.DIALECT,   
+  dialectOptions: {
+    connectTimeout: 30000
+  }     
 })
 
 module.exports = { sequelize }
