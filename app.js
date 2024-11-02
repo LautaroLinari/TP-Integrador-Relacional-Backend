@@ -3,7 +3,6 @@ const contenidoRoutes = require('./routes/contenidoRoutes');
 const db = require('./conexion/database');
 const { sequelize } = require('./conexion/database');
 const app = express();
-const port = 3000;
 
 sequelize.authenticate()
   .then(() => {
@@ -37,6 +36,7 @@ app.use((err, req, res, next) => {
 //   console.log(`Server running on http://localhost:${PORT}`);
 // })
 
+const port = 3000;
 app.listen(port, async () => {
   await sequelize.authenticate()
   console.log(`Servidor Funcionando en http://localhost:${port}`)
