@@ -12,7 +12,7 @@ const swaggerDefinition = {
       url: 'http://localhost:3000',
     },
     {
-      url: 'https://tu-dominio-de-railway.app', // Cambia a tu dominio en Railway
+      url: 'https://tp-integrador-relacional-backend-production.up.railway.app/',
     },
   ],
   components: {

@@ -1,4 +1,3 @@
-// contenidoRoutes.js
 const express = require('express');
 const router = express.Router();
 const contenidoController = require('../controllers/contenidoController');
@@ -53,9 +52,7 @@ router.get('/contenido/filter', contenidoController.filterContenidos);
  *                   type: string
  *                   example: Bienvenido al Trabajo Practico de BD Relacionales Backend!
  */
-router.get('/', (req, res) => {
-    res.status(200).json({ message: 'Bienvenido al Trabajo Practico de BD Relacionales Backend!' })
-})
+router.get('/', (req, res) => { res.status(200).json({ message: 'Bienvenido al Trabajo Practico de BD Relacionales Backend!' }) })
 
 /**
  * @swagger
