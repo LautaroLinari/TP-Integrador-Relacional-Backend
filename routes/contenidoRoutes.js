@@ -7,8 +7,8 @@ const contenidoController = require('../controllers/contenidoController');
  * @swagger
  * /contenido/filter:
  *   get:
- *     summary: Filtrar contenidos por título, género y/o categoría
- *     description: Devuelve una lista de contenidos que coincidan con los filtros de título, género o categoría.
+ *     summary: Filtrar contenidos
+ *     description: Filtra los contenidos por título, género y/o categoría.
  *     parameters:
  *       - in: query
  *         name: titulo
@@ -19,21 +19,20 @@ const contenidoController = require('../controllers/contenidoController');
  *         name: nombre_genero
  *         schema:
  *           type: string
- *         description: Nombre del género
+ *         description: Género del contenido
  *       - in: query
  *         name: nombre_categoria
  *         schema:
  *           type: string
- *         description: Nombre de la categoría
+ *         description: Categoría del contenido
  *     responses:
  *       200:
- *         description: Lista de contenidos filtrados
+ *         description: Contenidos filtrados
  *       404:
- *         description: No se encontraron contenidos que coincidan con los filtros
+ *         description: No se encontraron contenidos
  *       500:
  *         description: Error interno del servidor
  */
-//Ruta de Filtrado
 router.get('/contenido/filter', contenidoController.filterContenidos);
 
 /**
@@ -54,7 +53,6 @@ router.get('/contenido/filter', contenidoController.filterContenidos);
  *                   type: string
  *                   example: Bienvenido al Trabajo Practico de BD Relacionales Backend!
  */
-// Ruta de Bienvenida
 router.get('/', (req, res) => {
     res.status(200).json({ message: 'Bienvenido al Trabajo Practico de BD Relacionales Backend!' })
 })
@@ -64,14 +62,17 @@ router.get('/', (req, res) => {
  * /contenido:
  *   get:
  *     summary: Obtener todos los contenidos
- *     description: Devuelve una lista de todos los contenidos disponibles con sus respectivos actores, géneros y categoría.
+ *     description: Devuelve una lista de todos los contenidos disponibles.
  *     responses:
  *       200:
  *         description: Lista de contenidos
- *       500:
- *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Contenido'
  */
-//Ruta de Todos los contenidos
 router.get('/contenido', contenidoController.getAllContenidos);
 
 /**
@@ -79,25 +80,25 @@ router.get('/contenido', contenidoController.getAllContenidos);
  * /contenido/{id}:
  *   get:
  *     summary: Obtener contenido por ID
- *     description: Devuelve un contenido específico por su ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID del contenido
+ *         description: ID del contenido a obtener
  *     responses:
  *       200:
  *         description: Contenido encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Contenido'
  *       404:
  *         description: Contenido no encontrado
- *       400:
- *         description: ID inválido
  *       500:
  *         description: Error interno del servidor
  */
-//Ruta de buscar por ID
 router.get('/contenido/:id', contenidoController.getContenidoById);
 
 /**
@@ -105,48 +106,21 @@ router.get('/contenido/:id', contenidoController.getContenidoById);
  * /contenido:
  *   post:
  *     summary: Crear nuevo contenido
- *     description: Crea un nuevo contenido con título, resumen, temporadas, duración, categoría, enlace al tráiler, géneros y actores.
+ *     description: Crea un contenido con actores, géneros y otra información.
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               titulo:
- *                 type: string
- *               resumen:
- *                 type: string
- *               temporadas:
- *                 type: integer
- *               duracion:
- *                 type: string
- *               id_categoria:
- *                 type: integer
- *               enlaces_trailer:
- *                 type: string
- *               generos:
- *                 type: array
- *                 items:
- *                   type: integer
- *               actores:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     nombre:
- *                       type: string
- *                     apellido:
- *                       type: string
+ *             $ref: '#/components/schemas/Contenido'
  *     responses:
  *       201:
  *         description: Contenido creado correctamente
  *       400:
- *         description: Error en los datos ingresados
+ *         description: Error en los datos proporcionados
  *       500:
  *         description: Error interno del servidor
  */
-//Ruta de Crear nuevo contenido
 router.post('/contenido', contenidoController.createContenido);
 
 /**
@@ -154,57 +128,27 @@ router.post('/contenido', contenidoController.createContenido);
  * /contenido/{id}:
  *   put:
  *     summary: Actualizar contenido por ID
- *     description: Actualiza un contenido específico por su ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID del contenido
+ *         description: ID del contenido a actualizar
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               titulo:
- *                 type: string
- *               resumen:
- *                 type: string
- *               temporadas:
- *                 type: integer
- *               duracion:
- *                 type: string
- *               id_categoria:
- *                 type: integer
- *               enlaces_trailer:
- *                 type: string
- *               generos:
- *                 type: array
- *                 items:
- *                   type: integer
- *               actores:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     nombre:
- *                       type: string
- *                     apellido:
- *                       type: string
+ *             $ref: '#/components/schemas/Contenido'
  *     responses:
  *       200:
  *         description: Contenido actualizado correctamente
- *       400:
- *         description: ID inválido o error en los datos ingresados
  *       404:
  *         description: Contenido no encontrado
  *       500:
  *         description: Error interno del servidor
  */
-//Ruta de Actualizar contenido por ID
 router.put('/contenido/:id', contenidoController.updateContenidoById);
 
 /**
@@ -212,25 +156,21 @@ router.put('/contenido/:id', contenidoController.updateContenidoById);
  * /contenido/{id}:
  *   delete:
  *     summary: Eliminar contenido por ID
- *     description: Elimina un contenido específico por su ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID del contenido
+ *         description: ID del contenido a eliminar
  *     responses:
  *       200:
  *         description: Contenido eliminado correctamente
- *       400:
- *         description: ID inválido
  *       404:
  *         description: Contenido no encontrado
  *       500:
  *         description: Error interno del servidor
  */
-//Ruta de Eliminar contenido por ID
 router.delete('/contenido/:id', contenidoController.deleteContenidoById);
 
 

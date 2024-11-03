@@ -15,11 +15,13 @@ sequelize.authenticate()
     console.error('No se pudo conectar a la base de datos:', err);
   });
 
+// Middlewares
+app.use(express.json());
+
 // Documentación con Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Middlewares
-app.use(express.json());
+//Ruta de Bienvenida
 app.use('/', contenidoRoutes);
 
 // Middleware para manejar rutas inexistentes
@@ -37,5 +39,6 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 3000;
 app.listen(port, async () => {
   await sequelize.authenticate();
-  console.log(`Servidor Funcionando en http://localhost:${port}`);
+  console.log(`Servidor Funcionando en http://localhost:${port}`)
+  console.log(`Documentación de la API en http://localhost:${port}/api-docs`)
 });
