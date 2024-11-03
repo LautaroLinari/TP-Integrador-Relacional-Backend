@@ -2,6 +2,36 @@ const { Contenido, Actor, Genero, Categoria } = require('../models/relaciones');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
+/**
+ * @swagger
+ * /contenido/filter:
+ *   get:
+ *     summary: Filtrar contenidos por título, género y/o categoría
+ *     description: Devuelve una lista de contenidos que coincidan con los filtros de título, género o categoría.
+ *     parameters:
+ *       - in: query
+ *         name: titulo
+ *         schema:
+ *           type: string
+ *         description: Título del contenido
+ *       - in: query
+ *         name: nombre_genero
+ *         schema:
+ *           type: string
+ *         description: Nombre del género
+ *       - in: query
+ *         name: nombre_categoria
+ *         schema:
+ *           type: string
+ *         description: Nombre de la categoría
+ *     responses:
+ *       200:
+ *         description: Lista de contenidos filtrados
+ *       404:
+ *         description: No se encontraron contenidos que coincidan con los filtros
+ *       500:
+ *         description: Error interno del servidor
+ */
 // Filtrar contenidos por título, género y/o categoría
 const filterContenidos = async (req, res) => {
     const { titulo, nombre_genero, nombre_categoria } = req.query;
@@ -45,6 +75,18 @@ const filterContenidos = async (req, res) => {
     }
 };
 
+/**
+ * @swagger
+ * /contenido:
+ *   get:
+ *     summary: Obtener todos los contenidos
+ *     description: Devuelve una lista de todos los contenidos disponibles con sus respectivos actores, géneros y categoría.
+ *     responses:
+ *       200:
+ *         description: Lista de contenidos
+ *       500:
+ *         description: Error interno del servidor
+ */
 // Obtener todos los contenidos
 const getAllContenidos = async (req, res) => {
     try {
@@ -72,6 +114,29 @@ const getAllContenidos = async (req, res) => {
     }
 };
 
+/**
+ * @swagger
+ * /contenido/{id}:
+ *   get:
+ *     summary: Obtener contenido por ID
+ *     description: Devuelve un contenido específico por su ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del contenido
+ *     responses:
+ *       200:
+ *         description: Contenido encontrado
+ *       404:
+ *         description: Contenido no encontrado
+ *       400:
+ *         description: ID inválido
+ *       500:
+ *         description: Error interno del servidor
+ */
 // Obtener contenido por ID
 const getContenidoById = async (req, res) => {
     const contenidoId = req.params.id;
@@ -106,6 +171,52 @@ const getContenidoById = async (req, res) => {
     }
 };
 
+/**
+ * @swagger
+ * /contenido:
+ *   post:
+ *     summary: Crear nuevo contenido
+ *     description: Crea un nuevo contenido con título, resumen, temporadas, duración, categoría, enlace al tráiler, géneros y actores.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               titulo:
+ *                 type: string
+ *               resumen:
+ *                 type: string
+ *               temporadas:
+ *                 type: integer
+ *               duracion:
+ *                 type: string
+ *               id_categoria:
+ *                 type: integer
+ *               enlaces_trailer:
+ *                 type: string
+ *               generos:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *               actores:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     nombre:
+ *                       type: string
+ *                     apellido:
+ *                       type: string
+ *     responses:
+ *       201:
+ *         description: Contenido creado correctamente
+ *       400:
+ *         description: Error en los datos ingresados
+ *       500:
+ *         description: Error interno del servidor
+ */
 // Crear nuevo contenido
 const createContenido = async (req, res) => {
     const { titulo, resumen, temporadas, duracion, id_categoria, enlaces_trailer, generos, actores } = req.body;
@@ -174,6 +285,61 @@ const createContenido = async (req, res) => {
     }
 };
 
+/**
+ * @swagger
+ * /contenido/{id}:
+ *   put:
+ *     summary: Actualizar contenido por ID
+ *     description: Actualiza un contenido específico por su ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del contenido
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               titulo:
+ *                 type: string
+ *               resumen:
+ *                 type: string
+ *               temporadas:
+ *                 type: integer
+ *               duracion:
+ *                 type: string
+ *               id_categoria:
+ *                 type: integer
+ *               enlaces_trailer:
+ *                 type: string
+ *               generos:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *               actores:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     nombre:
+ *                       type: string
+ *                     apellido:
+ *                       type: string
+ *     responses:
+ *       200:
+ *         description: Contenido actualizado correctamente
+ *       400:
+ *         description: ID inválido o error en los datos ingresados
+ *       404:
+ *         description: Contenido no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
 // Actualizar contenido por ID
 const updateContenidoById = async (req, res) => {
     const contenidoId = req.params.id;
@@ -227,6 +393,29 @@ const updateContenidoById = async (req, res) => {
     }
 };
 
+/**
+ * @swagger
+ * /contenido/{id}:
+ *   delete:
+ *     summary: Eliminar contenido por ID
+ *     description: Elimina un contenido específico por su ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del contenido
+ *     responses:
+ *       200:
+ *         description: Contenido eliminado correctamente
+ *       400:
+ *         description: ID inválido
+ *       404:
+ *         description: Contenido no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
 // Eliminar contenido por ID
 const deleteContenidoById = async (req, res) => {
     const contenidoId = req.params.id;
@@ -250,7 +439,7 @@ const deleteContenidoById = async (req, res) => {
     }
 };
 
-//Exportando funciones para utilizarlo en el archivo de rutas
+
 module.exports = {
     filterContenidos,
     getAllContenidos,
