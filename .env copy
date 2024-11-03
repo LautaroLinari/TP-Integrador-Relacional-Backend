@@ -1,5 +1,6 @@
-DATABASE=trailerflix
-DBUSER=root
-//Colocar la password de tu usuario ROOT de Workbench
-PASSWORD= 
-HOST=localhost
+DB_NAME=trailerflix
+DB_USER=root
+//Colocar la password de tu usuario ROOT local
+DB_PASSWORD=
+DB_HOST=localhost
+DB_DIALECT=mysql
