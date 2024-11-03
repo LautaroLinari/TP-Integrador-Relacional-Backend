@@ -5,14 +5,14 @@ dotenv.config({ path: `.env.${ENV}` })
 
 
 const sequelize = new Sequelize (
-  process.env.DATABASE, 
-  process.env.DBUSER, 
-  process.env.PASSWORD, 
+  process.env.DB_NAME, 
+  process.env.DB_USER, 
+  process.env.DB_PASSWORD, 
 
   {
-  host: process.env.HOST,
-  port: process.env.PORT,
-  dialect: process.env.DIALECT,   
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  dialect: process.env.DB_DIALECT,   
   dialectOptions: {
     connectTimeout: 30000
   }     
