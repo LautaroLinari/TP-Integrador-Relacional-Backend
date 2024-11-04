@@ -14,7 +14,7 @@ const sequelize = new Sequelize (
   port: process.env.DB_PORT,
   dialect: process.env.DB_DIALECT,   
   dialectOptions: {
-    connectTimeout: 30000
+    connectTimeout: 10000
   }     
 })
 

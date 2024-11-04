@@ -40,7 +40,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    cd <nombre-del-repositorio>
 
 2. **Instala las dependencias:**
-   npm install express mysql mysql2 sequelize swagger-jsdoc swagger-ui-express dotenv
+   npm install express sequelize swagger-jsdoc swagger-ui-express dotenv
 
 3. **Descarga los archivos SQL**
    
