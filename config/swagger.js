@@ -67,6 +67,12 @@ const swaggerDefinition = {
         },
       },
     },
+    tags: [
+      {
+        name: 'Ejemplos',
+        description: 'Ejemplos para gestionar contenidos y filtros en la API',
+      }
+    ],
   },
 };
 

@@ -6,6 +6,8 @@ const contenidoController = require('../controllers/contenidoController');
  * @swagger
  * /contenido/filter:
  *   get:
+ *     tags:
+ *       - Ejemplos
  *     summary: Filtrar contenidos
  *     description: Filtra los contenidos por título, género y/o categoría.
  *     parameters:
@@ -38,6 +40,8 @@ router.get('/contenido/filter', contenidoController.filterContenidos);
  * @swagger
  * /:
  *   get:
+ *     tags:
+ *       - Ejemplos
  *     summary: Ruta de bienvenida
  *     description: Muestra un mensaje de bienvenida al usuario indicando que la API está funcionando.
  *     responses:
@@ -58,6 +62,8 @@ router.get('/', (req, res) => { res.status(200).json({ message: 'Bienvenido al T
  * @swagger
  * /contenido:
  *   get:
+ *     tags:
+ *       - Ejemplos
  *     summary: Obtener todos los contenidos
  *     description: Devuelve una lista de todos los contenidos disponibles.
  *     responses:
@@ -76,6 +82,8 @@ router.get('/contenido', contenidoController.getAllContenidos);
  * @swagger
  * /contenido/{id}:
  *   get:
+ *     tags:
+ *       - Ejemplos
  *     summary: Obtener contenido por ID
  *     parameters:
  *       - in: path
@@ -102,6 +110,8 @@ router.get('/contenido/:id', contenidoController.getContenidoById);
  * @swagger
  * /contenido:
  *   post:
+ *     tags:
+ *       - Ejemplos
  *     summary: Crear nuevo contenido
  *     description: Crea un contenido con actores, géneros y otra información.
  *     requestBody:
@@ -124,6 +134,8 @@ router.post('/contenido', contenidoController.createContenido);
  * @swagger
  * /contenido/{id}:
  *   put:
+ *     tags:
+ *       - Ejemplos
  *     summary: Actualizar contenido por ID
  *     parameters:
  *       - in: path
@@ -152,6 +164,8 @@ router.put('/contenido/:id', contenidoController.updateContenidoById);
  * @swagger
  * /contenido/{id}:
  *   delete:
+ *     tags:
+ *       - Ejemplos
  *     summary: Eliminar contenido por ID
  *     parameters:
  *       - in: path
