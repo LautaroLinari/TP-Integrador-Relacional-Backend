@@ -1,4 +1,3 @@
-// models/index.js
 const { Actor } = require('./actor.js');
 const { Contenido } = require('./contenido.js');
 const { Genero } = require('./genero.js');

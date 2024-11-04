@@ -18,7 +18,7 @@ sequelize.authenticate()
 // Middlewares
 app.use(express.json());
 
-// Documentación con Swagger
+// Ruta de Documentación con Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //Ruta de Bienvenida

@@ -11,7 +11,9 @@ Esta API permite gestionar diferentes contenidos, cada uno asociado a actores, g
 
 Los principales endpoints permiten realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre los contenidos y realizar búsquedas filtradas según diversos criterios.
 
-En este proyecto se usa una arquitectura por capas para mantener el proyecto limpio y ordenado,  como la utilización de Controllers para las cada una de las rutas(endpoints).
+En este proyecto se usa una arquitectura por capas para mantener el proyecto limpio y ordenado,  como la utilización de Controllers para las cada una de las rutas(endpoints)
+
+Además se utilizó Swagger para manejar la documentación y hacer las pruebas correspondientes.
 
 
 ## Tecnologías Utilizadas
@@ -20,6 +22,7 @@ En este proyecto se usa una arquitectura por capas para mantener el proyecto lim
 - Express.js
 - MySQL Workbench
 - Sequelize
+- Swagger
 
 
 ## Requisitos previos
@@ -37,7 +40,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
    cd <nombre-del-repositorio>
 
 2. **Instala las dependencias:**
-   npm install express mysql mysql2 sequelize
+   npm install express mysql mysql2 sequelize swagger-jsdoc swagger-ui-express dotenv
 
 3. **Descarga los archivos SQL**
    
@@ -52,11 +55,11 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
 1. **Inicia el servidor**
    
-   npm start
+   npm run start:local
 
 2. **Accede a la API**
    
-   Ya sea desde el archivo api.http (Para utilizar api.http es necesario tener instalado la extensión "Rest Client" en VSC) o desde su navegador predeterminado.
+   Ya sea desde el archivo api.http (Para utilizar api.http es necesario tener instalado la extensión "Rest Client" en VSC) o desde su navegador a traves del link del despliegue (tp-integrador-relacional-backend-production.up.railway.app).
 
 
 ## Endpoints de Busqueda
