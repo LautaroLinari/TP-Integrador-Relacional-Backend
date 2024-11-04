@@ -36,26 +36,6 @@ const contenidoController = require('../controllers/contenidoController');
  */
 router.get('/contenido/filter', contenidoController.filterContenidos);
 
-/**
- * @swagger
- * /:
- *   get:
- *     tags:
- *       - Ejemplos
- *     summary: Ruta de bienvenida
- *     description: Muestra un mensaje de bienvenida al usuario indicando que la API está funcionando.
- *     responses:
- *       200:
- *         description: Bienvenida al usuario
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Bienvenido al Trabajo Practico de BD Relacionales Backend!
- */
 router.get('/', (req, res) => { res.status(200).json({ message: 'Bienvenido al Trabajo Practico de BD Relacionales Backend!' }) })
 
 /**
