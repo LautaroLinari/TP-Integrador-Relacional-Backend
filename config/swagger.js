@@ -66,7 +66,7 @@ const swaggerDefinition = {
         type: 'object',
         properties: {
           error: { 
-            type: 'string', example: error.details,
+            type: 'string', example: 'Ocurrió un error al procesar la solicitud.',
           },
           details: { type: 'string', example: error.details },
         },
