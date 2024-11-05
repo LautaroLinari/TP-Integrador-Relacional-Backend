@@ -109,8 +109,8 @@ const getContenidoById = async (req, res) => {
 const createContenido = async (req, res) => {
     const { titulo, resumen, temporadas, duracion, id_categoria, enlaces_trailer, generos, actores } = req.body;
 
-    if (!titulo || typeof titulo !== 'string' || titulo.trim().length === 0) {
-        return res.status(400).json({ error: 'El título es obligatorio y debe ser una cadena de texto.' });
+    if (!titulo || typeof titulo !== 'string') {
+        return res.status(400).json({ error: 'El título debe ser una cadena de texto.' });
     }
 
     if (!Number.isInteger(temporadas) || temporadas < 0) {
