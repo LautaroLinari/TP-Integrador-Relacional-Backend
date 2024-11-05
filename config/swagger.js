@@ -20,7 +20,7 @@ const swaggerDefinition = {
       Contenido: {
         type: 'object',
         properties: {
-          ID: { type: 'integer', example: 1 },
+          ID: { type: 'integer', example: 101 },
           titulo: { type: 'string', example: 'Super Mario Bros' },
           resumen: { type: 'string', example: 'Descripción del contenido.' },
           temporadas: { type: 'integer', example: 1, nullable: true },
