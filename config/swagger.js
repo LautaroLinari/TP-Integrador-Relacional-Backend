@@ -27,7 +27,7 @@ const swaggerDefinition = {
           duracion: { type: 'string', example: '120 minutos' },
           id_categoria: { type: 'integer', example: 2 },
           enlaces_trailer: { type: 'string', example: 'https://www.youtube.com/watch?v=GIJIESOZALQ' },
-          generos: { type: 'array', items: { type: 'integer', example: 1 } },
+          generos: { type: 'array', items: { type: 'integer', example: [1, 3, 6] } },
           actores: {
             type: 'array',
             items: {
