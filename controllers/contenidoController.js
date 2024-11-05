@@ -117,7 +117,7 @@ const createContenido = async (req, res) => {
         return res.status(400).json({ error: 'El número de temporadas debe ser un entero positivo.' });
     }
 
-    if (typeof duracion !== 'string' || duracion.trim().length === 0) {
+    if (typeof duracion !== 'string') {
         return res.status(400).json({ error: 'La duración debe ser una cadena de texto válida.' });
     }
 
