@@ -21,20 +21,20 @@ const swaggerDefinition = {
         type: 'object',
         properties: {
           ID: { type: 'integer', example: 101 },
-          titulo: { type: 'string', example: 'Super Mario Bros' },
-          resumen: { type: 'string', example: 'Descripción del contenido.' },
-          temporadas: { type: 'integer', example: 0, nullable: true },
-          duracion: { type: 'string', example: '120 minutos' },
-          id_categoria: { type: 'integer', example: 2 },
-          enlaces_trailer: { type: 'string', example: 'https://www.youtube.com/watch?v=GIJIESOZALQ' },
-          generos: { type: 'array', items: { type: 'integer', example: [1, 3, 6] } },
+          titulo: { type: 'string', example: 'Peaky Blinders' },
+          resumen: { type: 'string', example: 'Gran Bretaña vive la posguerra. Los soldados regresan, se acuñan nuevas revoluciones y nacen bandas criminales en una nación agitada. En Birmingham, una pandilla de gánsters callejeros asciende hasta convertirse en los reyes de la clase obrera.' },
+          temporadas: { type: 'integer', example: 6, nullable: true },
+          duracion: { type: 'string', example: '' },
+          id_categoria: { type: 'integer', example: 1 },
+          enlaces_trailer: { type: 'string', example: 'https://www.youtube.com/watch?v=H282c9q2MUU' },
+          generos: { type: 'array', items: { type: 'integer', example: [1, 4, 10] } },
           actores: {
             type: 'array',
             items: {
               type: 'object',
               properties: {
-                nombre: { type: 'string', example: 'Chris' },
-                apellido: { type: 'string', example: 'Pratt' },
+                nombre: { type: 'string', example: 'Cillian' },
+                apellido: { type: 'string', example: 'Murphy' },
               },
             },
           },
@@ -68,7 +68,7 @@ const swaggerDefinition = {
           error: { 
             type: 'string', example: 'Ocurrió un error al procesar la solicitud.',
           },
-          details: { type: 'string', example: error.details },
+          details: { type: 'string', example: "Error" },
         },
       },
     },
