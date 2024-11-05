@@ -36,7 +36,10 @@ const contenidoController = require('../controllers/contenidoController');
  */
 router.get('/contenido/filter', contenidoController.filterContenidos);
 
-router.get('/', (req, res) => { res.status(200).json({ message: 'Bienvenido al Trabajo Practico de BD Relacionales Backend!' }) })
+router.get('/', (req, res) => { res.status(200).send({ 
+    Mensaje: 'Bienvenido al Trabajo Practico de BD Relacionales Backend!',
+    Documentación: 'https://tp-integrador-relacional-backend-production.up.railway.app/api-docs/'}) 
+})
 
 /**
  * @swagger
