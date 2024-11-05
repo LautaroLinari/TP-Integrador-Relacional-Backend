@@ -70,11 +70,20 @@ const filterContenidos = async (req, res) => {
             ]
         });
 
-        if (contenidos.length === 0) {
+        //Lo utilizo para comprobar si tiene temporadas
+        const resultados = contenidos.rows.map(contenido => {
+            const contenidoData = contenido.get({ plain: true });
+            if (contenidoData.temporadas === null) {
+                delete contenidoData.temporadas;
+            }
+            return contenidoData;
+        });
+
+        if (resultados.length === 0) {
             return res.status(404).json({ message: 'No se encontraron contenidos que coincidan con los filtros ingresados.' });
         }
 
-        res.status(200).json(contenidos);
+        res.json({ count: resultados.length, rows: resultados });
     } catch (error) {
         console.error('Error al filtrar contenidos:', error);
         res.status(500).json({ error: 'Ocurrió un error al filtrar los contenidos'});
