@@ -23,7 +23,7 @@ const swaggerDefinition = {
           ID: { type: 'integer', example: 101 },
           titulo: { type: 'string', example: 'Super Mario Bros' },
           resumen: { type: 'string', example: 'Descripción del contenido.' },
-          temporadas: { type: 'integer', example: null, nullable: true },
+          temporadas: { type: 'integer', nullable: true },
           duracion: { type: 'string', example: '120 minutos' },
           id_categoria: { type: 'integer', example: 2 },
           enlaces_trailer: { type: 'string', example: 'https://www.youtube.com/watch?v=GIJIESOZALQ' },
