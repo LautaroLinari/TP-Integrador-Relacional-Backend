@@ -35,7 +35,7 @@ Content-Type: application/json
 
 
 ### Actualizar contenido por ID (Agregandole más generos y reemplazando los actores)
-PUT http://localhost:3000/contenido/99
+PUT http://localhost:3000/contenido/107
 Content-Type: application/json
 
 {
@@ -54,4 +54,4 @@ Content-Type: application/json
 
 
 ### Eliminar contenido por ID
-DELETE http://localhost:3000/contenido/99
+DELETE http://localhost:3000/contenido/107

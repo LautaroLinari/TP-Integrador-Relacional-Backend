@@ -7,9 +7,7 @@ const filterContenidos = async (req, res) => {
     const { titulo, nombre_genero, nombre_categoria } = req.query;
 
     let where = {};
-    if (titulo) {
-        where.titulo = { [Op.like]: `%${titulo}%` };
-    }
+    if (titulo) { where.titulo = { [Op.like]: `%${titulo}%` }; }
 
     const generoCondition = nombre_genero ? { nombre_genero: { [Op.like]: `%${nombre_genero}%` } } : {};
     const categoriaCondition = nombre_categoria ? { nombre_categoria: { [Op.like]: `%${nombre_categoria}%` } } : {};
@@ -19,8 +17,8 @@ const filterContenidos = async (req, res) => {
             where,
             attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
             include: [
-                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] },
-                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'], where: generoCondition },
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'], through: { attributes: []} },
+                { model: Genero, as: 'generos', attributes: ['nombre_genero'], through: { attributes: []}, where: generoCondition },
                 { model: Categoria, as: 'categoria', attributes: ['nombre_categoria'], where: categoriaCondition }
             ]
         });
@@ -51,15 +49,15 @@ const getAllContenidos = async (req, res) => {
         const contenidos = await Contenido.findAll({
             attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
             include: [
-                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] },
-                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'] },
-                { model: Categoria, as: 'categoria', attributes: ['nombre_categoria'] }
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'], through: { attributes: []} },
+                { model: Genero, as: 'generos', attributes: ['nombre_genero'], through: { attributes: []}  },
+                { model: Categoria, as: 'categoria', attributes: ['nombre_categoria']}
             ]
         });
 
         //Lo utilizo para comprobar si tiene temporadas o duración
-        const resultados = contenidos.map(contenido => {
-            const contenidoData = contenido.get({ plain: true });
+        const resultados = contenidos.map(newContenido => {
+            const contenidoData = newContenido.get({ plain: true });
             if (contenidoData.temporadas === null) {
                 delete contenidoData.temporadas;
             }
@@ -68,7 +66,8 @@ const getAllContenidos = async (req, res) => {
 
         res.status(200).json(resultados);
     } catch (error) {
-        res.status(500).json({ error: 'Ocurrió un error al obtener los contenidos'});
+        console.error('Error al obtener todos los contenidos:', error);
+        res.status(500).json({ error: 'Ocurrió un error al obtener los contenidos' });
     }
 };
 
@@ -84,8 +83,8 @@ const getContenidoById = async (req, res) => {
         const contenido = await Contenido.findByPk(contenidoId, {
             attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
             include: [
-                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] },
-                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'] },
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'], through: { attributes: []} },
+                { model: Genero, as: 'generos', attributes: ['nombre_genero'], through: { attributes: []}  },
                 { model: Categoria, as: 'categoria', attributes: ['nombre_categoria'] }
             ]
         });
@@ -163,8 +162,8 @@ const createContenido = async (req, res) => {
 
         const contenidoCompleto = await Contenido.findByPk(nuevoContenido.ID, {
             include: [
-                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'] },
-                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] }
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'], through: { attributes: []} },
+                { model: Genero, as: 'generos', attributes: ['nombre_genero'], through: { attributes: []}  }
             ]
         });
 
@@ -216,8 +215,8 @@ const updateContenidoById = async (req, res) => {
 
         const contenidoActualizado = await Contenido.findByPk(contenido.ID, {
             include: [
-                { model: Genero, as: 'generos', attributes: ['ID', 'nombre_genero'] },
-                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'] }
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'], through: { attributes: []} },
+                { model: Genero, as: 'generos', attributes: ['nombre_genero'], through: { attributes: []}  }
             ]
         });
 

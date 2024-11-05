@@ -6,29 +6,29 @@ const { Categoria } = require('./categoria.js');
 // Establecer asociación muchos a muchos entre Contenido y Actor/Generos
 Contenido.belongsToMany(Actor, { 
     through: 'contenido_actores', 
-    foreignKey: 'ID_contenido', 
     as: 'actores',
+    foreignKey: 'ID_contenido', 
     timestamps: false  // Deshabilitar createdAt y updatedAt en la tabla intermedia
 });
 
 Actor.belongsToMany(Contenido, { 
     through: 'contenido_actores', 
-    foreignKey: 'ID_actor', 
     as: 'contenidos',
+    foreignKey: 'ID_actor', 
     timestamps: false  
 });
 
 Contenido.belongsToMany(Genero, { 
     through: 'contenido_generos', 
-    foreignKey: 'ID_contenido', 
     as: 'generos',
+    foreignKey: 'ID_contenido', 
     timestamps: false  
 });
 
 Genero.belongsToMany(Contenido, { 
     through: 'contenido_generos', 
-    foreignKey: 'ID_genero', 
     as: 'contenidos',
+    foreignKey: 'ID_genero', 
     timestamps: false 
 });
 
