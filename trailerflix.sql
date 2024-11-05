@@ -1,4 +1,4 @@
-CREATE SCHEMA trailerflix
+CREATE SCHEMA IF NOT EXISTS trailerflix
 DEFAULT CHARACTER SET utf8mb4;
 
 USE trailerflix;
