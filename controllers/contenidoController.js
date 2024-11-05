@@ -114,11 +114,11 @@ const createContenido = async (req, res) => {
         return res.status(400).json({ error: 'El título es obligatorio y debe ser una cadena de texto.' });
     }
 
-    if (temporadas !== undefined && (!Number.isInteger(temporadas) || temporadas < 0)) {
+    if (!Number.isInteger(temporadas) || temporadas < 0) {
         return res.status(400).json({ error: 'El número de temporadas debe ser un entero positivo.' });
     }
 
-    if (duracion !== undefined && (typeof duracion !== 'string' || duracion.trim().length === 0)) {
+    if (typeof duracion !== 'string' || duracion.trim().length === 0) {
         return res.status(400).json({ error: 'La duración debe ser una cadena de texto válida.' });
     }
 

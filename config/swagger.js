@@ -24,7 +24,7 @@ const swaggerDefinition = {
           titulo: { type: 'string', example: 'Peaky Blinders' },
           resumen: { type: 'string', example: 'Gran Bretaña vive la posguerra. Los soldados regresan, se acuñan nuevas revoluciones y nacen bandas criminales en una nación agitada. En Birmingham, una pandilla de gánsters callejeros asciende hasta convertirse en los reyes de la clase obrera.' },
           temporadas: { type: 'integer', example: 6, nullable: true },
-          duracion: { type: 'string', example: '', nulleable: true },
+          duracion: { type: 'string', example: ' ', nulleable: true },
           id_categoria: { type: 'integer', example: 1 },
           enlaces_trailer: { type: 'string', example: 'https://www.youtube.com/watch?v=H282c9q2MUU' },
           generos: { type: 'array', items: { type: 'integer', example: [1, 4, 10] } },
