@@ -3,7 +3,7 @@ const { Contenido } = require('./contenido.js');
 const { Genero } = require('./genero.js');
 const { Categoria } = require('./categoria.js');
 
-// Establecer asociación muchos a muchos entre Contenido y Actor
+// Establecer asociación muchos a muchos entre Contenido y Actor/Generos
 Contenido.belongsToMany(Actor, { 
     through: 'contenido_actores', 
     foreignKey: 'ID_contenido', 
