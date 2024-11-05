@@ -2,47 +2,6 @@ const { Contenido, Actor, Genero, Categoria } = require('../models/relaciones');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
-// Filtrar contenidos por título, género y/o categoría
-const filterContenidos = async (req, res) => {
-    const { titulo, nombre_genero, nombre_categoria } = req.query;
-
-    let where = {};
-    if (titulo) { where.titulo = { [Op.like]: `%${titulo}%` }; }
-
-    const generoCondition = nombre_genero ? { nombre_genero: { [Op.like]: `%${nombre_genero}%` } } : {};
-    const categoriaCondition = nombre_categoria ? { nombre_categoria: { [Op.like]: `%${nombre_categoria}%` } } : {};
-
-    try {
-        const contenidos = await Contenido.findAndCountAll({
-            where,
-            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
-            include: [
-                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'], through: { attributes: []} },
-                { model: Genero, as: 'generos', attributes: ['nombre_genero'], through: { attributes: []}, where: generoCondition },
-                { model: Categoria, as: 'categoria', attributes: ['nombre_categoria'], where: categoriaCondition }
-            ]
-        });
-
-        //Lo utilizo para comprobar si tiene temporadas o duración
-        const resultados = contenidos.rows.map(contenido => {
-            const contenidoData = contenido.get({ plain: true });
-            if (contenidoData.temporadas === null) {
-                delete contenidoData.temporadas;
-            }
-            return contenidoData;
-        });
-
-        if (resultados.length === 0) {
-            return res.status(404).json({ message: 'No se encontraron contenidos que coincidan con los filtros ingresados.' });
-        }
-
-        res.json({ count: resultados.length, rows: resultados });
-    } catch (error) {
-        console.error('Error al filtrar contenidos:', error);
-        res.status(500).json({ error: 'Ocurrió un error al filtrar los contenidos'});
-    }
-};
-
 // Obtener todos los contenidos
 const getAllContenidos = async (req, res) => {
     try {
@@ -55,16 +14,7 @@ const getAllContenidos = async (req, res) => {
             ]
         });
 
-        //Lo utilizo para comprobar si tiene temporadas o duración
-        const resultados = contenidos.map(newContenido => {
-            const contenidoData = newContenido.get({ plain: true });
-            if (contenidoData.temporadas === null) {
-                delete contenidoData.temporadas;
-            }
-            return contenidoData;
-        });
-
-        res.status(200).json(resultados);
+        res.status(200).json(contenidos);
     } catch (error) {
         console.error('Error al obtener todos los contenidos:', error);
         res.status(500).json({ error: 'Ocurrió un error al obtener los contenidos' });
@@ -93,15 +43,41 @@ const getContenidoById = async (req, res) => {
             return res.status(404).json({ error: 'Contenido no encontrado por ese ID!' });
         }
 
-        //Lo utilizo para comprobar si tiene temporadas o duración
-        const contenidoData = contenido.get({ plain: true });
-        if (contenidoData.temporadas === null) {
-            delete contenidoData.temporadas;
-        }
-
-        res.status(200).json(contenidoData);
+        res.status(200).json(contenido);
     } catch (error) {
         res.status(500).json({ error: 'Ocurrió un error al obtener el contenido'});
+    }
+};
+
+// Filtrar contenidos por título, género y/o categoría
+const filterContenidos = async (req, res) => {
+    const { titulo, nombre_genero, nombre_categoria } = req.query;
+
+    let where = {};
+    if (titulo) { where.titulo = { [Op.like]: `%${titulo}%` }; }
+
+    const generoCondition = nombre_genero ? { nombre_genero: { [Op.like]: `%${nombre_genero}%` } } : {};
+    const categoriaCondition = nombre_categoria ? { nombre_categoria: { [Op.like]: `%${nombre_categoria}%` } } : {};
+
+    try {
+        const contenidos = await Contenido.findAndCountAll({
+            where,
+            attributes: ['ID', 'titulo', 'resumen', 'duracion', 'enlaces_trailer', 'temporadas'],
+            include: [
+                { model: Actor, as: 'actores', attributes: ['nombre', 'apellido'], through: { attributes: []} },
+                { model: Genero, as: 'generos', attributes: ['nombre_genero'], through: { attributes: []}, where: generoCondition },
+                { model: Categoria, as: 'categoria', attributes: ['nombre_categoria'], where: categoriaCondition }
+            ]
+        });
+
+        if (contenidos.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron contenidos que coincidan con los filtros ingresados.' });
+        }
+
+        res.status(200).json(contenidos);
+    } catch (error) {
+        console.error('Error al filtrar contenidos:', error);
+        res.status(500).json({ error: 'Ocurrió un error al filtrar los contenidos'});
     }
 };
 
@@ -200,7 +176,7 @@ const updateContenidoById = async (req, res) => {
             await contenido.setGeneros(generos);
         }
 
-        //Lo utilizo para comprobar si tiene temporadas o duración
+        //Lo utilizo para comprobar si existe el actor a crear o tiene que crearlo
         if (actores && actores.length > 0) {
             const actoresInstancias = await Promise.all(
                 actores.map(async actor => {
