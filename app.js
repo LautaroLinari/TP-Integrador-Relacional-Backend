@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ message: 'Ocurrió un error en el servidor', details: err.message });
+  res.status(500).json({ message: 'Ocurrió un error en el servidor'});
 });
 
 // Server

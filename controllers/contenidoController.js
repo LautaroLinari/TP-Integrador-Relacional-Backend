@@ -127,11 +127,11 @@ const createContenido = async (req, res) => {
     }
 
     if (generos && !Array.isArray(generos)) {
-            return res.status(400).json({ error: 'Generos debe ser un array de IDs.' });
+        return res.status(400).json({ error: 'Generos debe ser un array de IDs.' });
     }
     
     if (actores && !Array.isArray(actores)) {
-            return res.status(400).json({ error: 'Actores debe ser un array de objetos con nombre y apellido.' });
+        return res.status(400).json({ error: 'Actores debe ser un array de objetos con nombre y apellido.' });
     }
 
     try {

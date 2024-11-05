@@ -43,6 +43,7 @@ const swaggerDefinition = {
       Actor: {
         type: 'object',
         properties: {
+          id: { type: 'integer', example: 77},
           nombre: { type: 'string', example: 'Chris' },
           apellido: { type: 'string', example: 'Pratt' },
         },
@@ -50,12 +51,14 @@ const swaggerDefinition = {
       Categoria: {
         type: 'object',
         properties: {
+          id: { type: 'integer', example: 1},
           nombre_categoria: { type: 'string', example: 'Serie' },
         },
       },
       Genero: {
         type: 'object',
         properties: {
+          id: { type: 'integer', example: 5},
           nombre_genero: { type: 'string', example: 'Acción' },
         },
       },
