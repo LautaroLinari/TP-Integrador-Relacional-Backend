@@ -27,7 +27,7 @@ const swaggerDefinition = {
           duracion: { type: 'string', example: ' ', nulleable: true },
           id_categoria: { type: 'integer', example: 1 },
           enlaces_trailer: { type: 'string', example: 'https://www.youtube.com/watch?v=H282c9q2MUU' },
-          generos: { type: 'array', items: { type: 'integer', example: [1, 4, 10] } },
+          generos: { type: 'array', items: { type: 'integer', example: 5 } },
           actores: {
             type: 'array',
             items: {
