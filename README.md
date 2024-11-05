@@ -59,7 +59,8 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
 2. **Accede a la API**
    
-   Ya sea desde el archivo api.http (Para utilizar api.http es necesario tener instalado la extensión "Rest Client" en VSC) o desde su navegador a traves del link del despliegue (tp-integrador-relacional-backend-production.up.railway.app).
+   Ya sea desde el archivo api.http (Para utilizar api.http es necesario tener instalado la extensión "Rest Client" en VSC) 
+   o desde su navegador a traves del link del despliegue (https://tp-integrador-relacional-backend-production.up.railway.app).
 
 
 ## Endpoints de Busqueda
