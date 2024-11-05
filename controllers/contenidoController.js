@@ -147,7 +147,7 @@ const createContenido = async (req, res) => {
             await nuevoContenido.setGeneros(generos);
         }
 
-        //Lo utilizo para comprobar si tiene temporadas o duración
+        //Lo utilizo para comprobar si existe el actor a crear o tiene que crearlo
         if (actores && actores.length > 0) {
             const actoresInstancias = await Promise.all(
                 actores.map(async actor => {
